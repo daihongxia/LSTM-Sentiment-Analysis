@@ -11,6 +11,8 @@ from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.corpus import stopwords
 import pickle
 import numpy as np
+from sklearn.feature_extraction.text import TfidfVectorizer
+
 def sentence_stemming(sentence):
     tokens=word_tokenize(sentence.lower())
     clean_tokens=tokens[:]
@@ -40,8 +42,7 @@ class model:
         return self.classifier.predict(self.vectorizer.transform(X))
 
 
-
-def calculate_sentiment(query,date_since= "2018-11-16",num=20):
+def calculate_sentiment(query, mod, date_since= "2018-11-16",num=20):
     consumer_key = 'u3sfnSpirMhLvPRC37kvi03sw'
     consumer_secret = '90f5W6be4VmVlJMvHS7pqoC5orD4eQSoknPLM3jQDw91zhyZP8'
     access_key= '1135307851323400192-A19WMtpajWzRwclbTNwzdzDdidXw5P'
@@ -56,8 +57,8 @@ def calculate_sentiment(query,date_since= "2018-11-16",num=20):
               since=date_since).items(num)
     tweets=list(tweets)
     processed_text=[process(tweet.text) for tweet in tweets]
-    model=pickle.load(open('sentiment_analyzer.model.0', 'rb'))
-    result = model.classifier.predict_proba(model.vectorizer.transform(processed_text))
+    #mod=pickle.load(open('sentiment_analyzer.model.0', 'rb'))
+    result = mod.classifier.predict_proba(mod.vectorizer.transform(processed_text))
     print(processed_text)
     final_result={'positive':np.mean(result, axis=0)[1]}
     return query,final_result
