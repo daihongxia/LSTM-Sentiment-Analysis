@@ -19,5 +19,6 @@ def predict():
     return flask.render_template('predictor.html',query='',prediction=predictions)
 
 if __name__=="__main__":
-  app.run(debug=True  )
+  #app.run(debug=True  )
+  app.run(host='0.0.0.0')
   #app.run()
