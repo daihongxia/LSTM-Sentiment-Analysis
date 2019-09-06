@@ -19,13 +19,18 @@ app = flask.Flask(__name__)
 def predict():
   print(request.args)
   if(request.args):
-    x_input, predictions = calculate_sentiment(request.args['query'], mod)
+    x_input, predictions, result_tweets = calculate_sentiment(request.args['query'], mod)
+    x_input = "The query you made, "+str(x_input)+", has a positive rate: "
     print(x_input)
-    return flask.render_template('predictor.html',query=x_input,prediction=predictions)
+    return flask.render_template('predictor.html',query=x_input,
+                                 prediction=predictions,
+                                 tweets=result_tweets)
   else:
     print("no input")
-    predictions = {'positive':0.5}
-    return flask.render_template('predictor.html',query='',prediction=predictions)
+    predictions = {'positive':''}
+    return flask.render_template('predictor.html',query='',
+                                 prediction=predictions,
+                                 tweets='')
 
 if __name__=="__main__":
   #app.run(debug=True  )

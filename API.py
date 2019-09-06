@@ -42,7 +42,7 @@ class model:
         return self.classifier.predict(self.vectorizer.transform(X))
 
 
-def calculate_sentiment(query, mod, date_since= "2018-11-16",num=20):
+def calculate_sentiment(query, mod, date_since= "2018-11-16",num=300):
     consumer_key = 'u3sfnSpirMhLvPRC37kvi03sw'
     consumer_secret = '90f5W6be4VmVlJMvHS7pqoC5orD4eQSoknPLM3jQDw91zhyZP8'
     access_key= '1135307851323400192-A19WMtpajWzRwclbTNwzdzDdidXw5P'
@@ -54,12 +54,23 @@ def calculate_sentiment(query, mod, date_since= "2018-11-16",num=20):
     tweets = tweepy.Cursor(api.search,
               q=search_words,
               lang="en",
-              since=date_since).items(num)
+              since=date_since,
+              tweet_mode='extended').items(num)
     tweets=list(tweets)
-    processed_text=[process(tweet.text) for tweet in tweets]
+    processed_text=[process(tweet.full_text) for tweet in tweets]
     #mod=pickle.load(open('sentiment_analyzer.model.0', 'rb'))
     result = mod.classifier.predict_proba(mod.vectorizer.transform(processed_text))
-    print(processed_text)
-    final_result={'positive':np.mean(result, axis=0)[1]}
-    return query,final_result
+    most_negatives = np.argsort(result[:,1])[:3]
+    most_positives = np.argsort(result[:,0])[:3]
+    print(most_negatives)
+    print(most_positives)
+    result_tweets = []
+    for i in most_negatives:
+        result_tweets.append(tweets[i].full_text)
+    for i in most_positives:
+        result_tweets.append(tweets[i].full_text)
+    #result_tweets = [tweet.text for tweet in tweets[most_negatives]]
+    print(result_tweets)
+    final_result={'positive':str(format(np.mean(result, axis=0)[1]*100, '.2f'))+'%'}
+    return query,final_result,result_tweets
 
