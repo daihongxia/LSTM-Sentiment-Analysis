@@ -21,6 +21,7 @@ def predict():
   if(request.args):
     x_input, predictions, result_tweets = calculate_sentiment(request.args['query'], mod)
     x_input = "The query you made, "+str(x_input)+", has a positive rate: "
+    result_tweets = ['Some sample tweets we collected and analyzed:'] + result_tweets
     print(x_input)
     return flask.render_template('predictor.html',query=x_input,
                                  prediction=predictions,
