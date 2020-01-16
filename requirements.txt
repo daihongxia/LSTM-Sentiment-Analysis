@@ -4,3 +4,5 @@ numpy
 nltk
 tweepy
 scikit-learn
+tensorflow
+h5py
