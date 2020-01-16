@@ -1,7 +1,7 @@
 import flask
 from flask import request
-from API import calculate_sentiment
-from processing import read_glove_vecs
+from src.API import calculate_sentiment
+from src.processing import read_glove_vecs
 
 import h5py
 from tensorflow.keras.models import Model

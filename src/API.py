@@ -1,7 +1,7 @@
 import tweepy
 import numpy as np
-from processing import process
-from twitter_keys import twitter_keys
+from .processing import process
+from .twitter_keys import twitter_keys
 
 def calculate_sentiment(query, 
                         mod, 
