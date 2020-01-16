@@ -1,6 +1,7 @@
 import tweepy
 import numpy as np
 from processing import process
+from twitter_keys import twitter_keys
 
 def calculate_sentiment(query, 
                         mod, 
@@ -9,10 +10,11 @@ def calculate_sentiment(query,
                         date_since= "2018-11-16",
                         num=300):
 
-    consumer_key = 'u3sfnSpirMhLvPRC37kvi03sw'
-    consumer_secret = '90f5W6be4VmVlJMvHS7pqoC5orD4eQSoknPLM3jQDw91zhyZP8'
-    access_key= '1135307851323400192-A19WMtpajWzRwclbTNwzdzDdidXw5P'
-    access_secret = 'XDOtNCYZCTCXNkSqt5yaSCL3Ku5JFsx3TJSgp4A3tbJQi'
+    consumer_key = twitter_keys['consumer_key']
+    consumer_secret=twitter_keys['consumer_secret']
+    access_key=twitter_keys['access_key']
+    access_secret = twitter_keys['access_secret']
+
     auth = tweepy.OAuthHandler(consumer_key, consumer_secret)
     auth.set_access_token(access_key, access_secret)
     api = tweepy.API(auth)
